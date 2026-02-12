@@ -1,26 +1,27 @@
+# A more detailed description of the manifest format `Bender.yml` can be found here:
+# https://github.com/pulp-platform/bender#manifest-format-benderyml
+
 package:
-  name: fir-xifu
+  name: fir-xifu-stub
   authors:
-    - "Francesco Conti <f.conti@unibo.it>"
+    - "CCP&BCDC FUNDED"
 
 dependencies:
-  cv32e40x:    { git: "https://github.com/pulp-platform/cv32e40x.git", rev: xifu-v0.1.0 }
+  cv32e40x: { git: "https://github.com/pulp-platform/cv32e40x.git", rev: xifu-v0.1.0 }
 
 sources:
-  - include_dirs:
-      - rtl
+  # Source files grouped in levels. Files in level 0 have no dependencies on files in this
+  # package. Files in level 1 only depend on files in level 0, files in level 2 on files in
+  # levels 1 and 0, etc. Files within a level are ordered alphabetically.
+  # Level 0
+  - target: rtl
     files:
-      # Source files grouped in levels. Files in level 0 have no dependencies on files in this
-      # package. Files in level 1 only depend on files in level 0, files in level 2 on files in
-      # levels 1 and 0, etc. Files within a level are ordered alphabetically.
-      # Level 0
       - rtl/fir_xifu_pkg.sv
-      # Level 1
-      - rtl/fir_xifu_id.sv
-      - rtl/fir_xifu_ex.sv
-      - rtl/fir_xifu_wb.sv
       - rtl/fir_xifu_ctrl.sv
+      - rtl/fir_xifu_ex.sv
+      - rtl/fir_xifu_id.sv
       - rtl/fir_xifu_regfile.sv
-      # Level 2
+      - rtl/fir_xifu_wb.sv
       - rtl/fir_xifu_top.sv
+  
 

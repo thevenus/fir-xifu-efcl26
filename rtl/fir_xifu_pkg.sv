@@ -20,19 +20,19 @@ package fir_xifu_pkg;
   parameter int unsigned X_ID_WIDTH = 4;
   parameter int unsigned X_ID_MAX   = 2**X_ID_WIDTH;
 
-  // inst[4:2]=110 [6:5]=10 [1:0]=11
+  // placeholder for actual opcode
   parameter logic [6:0] INSTR_OPCODE = 7'b1011011;
 
-  // R type
+  // placeholder for xfirdotp funct3
   parameter logic [2:0] INSTR_XFIRDOTP_FUNCT3 = 3'b010;
 
-  // I type
+  // placeholder for xfirlw funct3
   parameter logic [2:0] INSTR_XFIRLW_FUNCT3 = 3'b000;
 
-  // S type
+  // placeholder for xfirsw funct3
   parameter logic [2:0] INSTR_XFIRSW_FUNCT3 = 3'b001;
 
-  // useful only in EFCL SS exercise
+  // placeholder: you can remove this line after you fix the ID stage
   parameter logic [2:0] INSTR_PLACEHOLDER_FUNCT3 = 3'b000;
 
   function automatic logic [2:0] xifu_get_funct3(logic [31:0] in);

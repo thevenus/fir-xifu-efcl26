@@ -35,9 +35,9 @@ module fir_xifu_regfile
   assign rf_op_a = regs_q[ex2regfile_i.rs1[$clog2(NB_REGS)-1:0]];
   assign rf_op_b = regs_q[ex2regfile_i.rs2[$clog2(NB_REGS)-1:0]];
   assign rf_op_c = regs_q[ex2regfile_i.rd [$clog2(NB_REGS)-1:0]];
-  assign regfile2ex_o.op_a = (wb2regfile_i.rd == ex2regfile_i.rs1) & wb2regfile_i.write ? wb2regfile_i.result : rf_op_a;
-  assign regfile2ex_o.op_b = (wb2regfile_i.rd == ex2regfile_i.rs2) & wb2regfile_i.write ? wb2regfile_i.result : rf_op_b;
-  assign regfile2ex_o.op_c = (wb2regfile_i.rd == ex2regfile_i.rd)  & wb2regfile_i.write ? wb2regfile_i.result : rf_op_c;
+  assign regfile2ex_o.op_a = rf_op_a; // placeholder: maybe something is needed here?
+  assign regfile2ex_o.op_b = rf_op_b; // placeholder: maybe something is needed here?
+  assign regfile2ex_o.op_c = rf_op_c; // placeholder: maybe something is needed here?
 
   // 1 RF write port in WB stage
   for(genvar ii=0; ii<NB_REGS; ii++) begin
