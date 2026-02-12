@@ -15,67 +15,43 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 
 int main()
 {
+  uint32_t x,y,z;
+  uint32_t px,py,pz;
+  x = 0x01020304;
+  y = 0x01010101;
+  z = 0;
+  px = (uint32_t) &x;
+  py = (uint32_t) &y;
+  pz = (uint32_t) &z;
 
-  // // inst[4:2]=110 [6:5]=10 [1:0]=11
-  // parameter logic [6:0] INSTR_OPCODE = 7'b1011011;
+  asm volatile("add t0, zero, %0" ::"r"(px));
+  asm volatile("add t1, zero, %0" ::"r"(py));
+  asm volatile("add t2, zero, %0" ::"r"(pz));
+  // asm volatile("lw t3, 0x0(t0)");
 
-  // // R type
-  // parameter logic [2:0] INSTR_XFIRDOTP_FUNCT3 = 3'b010;
+  // asm volatile(".word 0xdeadbeef\n");
+  
+  // xifu load x
+  asm volatile(".word 0x0042805B\n");
+  asm volatile("xor zero, zero, zero");
 
-  // // I type
-  // parameter logic [2:0] INSTR_XFIRLW_FUNCT3 = 3'b000;
+  // xifu load y
+  asm volatile(".word 0x000300DB\n");
+  asm volatile("xor zero, zero, zero");
 
-  // // S type
-  // parameter logic [2:0] INSTR_XFIRSW_FUNCT3 = 3'b001;
+  // xifu dotp 
+  asm volatile(".word 0x0010215B\n");
+  asm volatile("xor zero, zero, zero");
 
-  unsigned int x = 0x01020304;
-  unsigned int y = 0x01010101;
-  unsigned int z = 0;
-  unsigned int px = (unsigned int) &x;
-  unsigned int py = (unsigned int) &y;
-  unsigned int pz = (unsigned int) &z;
+  // xifu store
+  asm volatile(".word 0x082392DB\n");
+  asm volatile("xor zero, zero, zero");
+  // asm volatile(".word ");
 
-  // load t0 / x5
-  asm volatile("addi t0, %0, 0" ::"r"(px));
-  // load t1 / x6
-  asm volatile("addi t1, %0, 0" ::"r"(py));
-  // load t2 / x7
-  asm volatile("addi t2, %0, 0" ::"r"(pz));
-
-  // XFIRLW xr0, 0(t0)
-  asm volatile(".word (0x004     << 20) /* imm    */ | \
-                      (0b00101   << 15) /* rs1    */ | \
-                      (0b000     << 12) /* funct3 */ | \
-                      (0b00000   <<  7) /* rd     */ | \
-                      (0b1011011 <<  0) /* opcode */   \n");
-
-  // XFIRLW xr1, 0(t1)
-  asm volatile(".word (0x000     << 20) /* imm    */ | \
-                      (0b00110   << 15) /* rs1    */ | \
-                      (0b000     << 12) /* funct3 */ | \
-                      (0b00001   <<  7) /* rd     */ | \
-                      (0b1011011 <<  0) /* opcode */   \n");
-
-  // XFIRDOTP xr2, xr1, xr0
-  asm volatile(".word (0x0       << 25) /* empty  */ | \
-                      (0b00001   << 20) /* rs2    */ | \
-                      (0b00000   << 15) /* rs1    */ | \
-                      (0b010     << 12) /* funct3 */ | \
-                      (0b00010   <<  7) /* rd     */ | \
-                      (0b1011011 <<  0) /* opcode */   \n");
-
-  // XFIRSW 0(t2), xr2
-  asm volatile(".word (0x04      << 25) /* imm_hi */ | \
-                      (0b00010   << 20) /* rs2    */ | \
-                      (0b00111   << 15) /* rs1    */ | \
-                      (0b001     << 12) /* funct3 */ | \
-                      (0x05      <<  7) /* imm_lo */ | \
-                      (0b1011011 <<  0) /* opcode */   \n");
 
   printf("Hello %08x!\n", z);
-
-  return 0;
 }
